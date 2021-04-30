@@ -68,6 +68,7 @@
 		$sql="SELECT SUM(termine) AS summe FROM $username";
         $result=$pdo->query($sql)->fetch();
 		
+		echo $username;
         echo $result["summe"];
 		?>
 		</div>
