@@ -1,0 +1,77 @@
+body {
+	background: #f2f2f2;
+	font-size: 20px;
+	margin: 0; 
+	height: 100%;
+	font-family: Calibri;
+}
+.auswertung {
+	margin-top: 20px;
+	margin-left: 125px;
+}
+.login {
+	width: 25%;
+	margin: 75px auto;
+	background: white;
+	padding: 20px 40px;
+	font-family: Calibri;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
+}
+.form{
+	width: 25%;
+	margin: 75px 125px;
+	background: white;
+	padding: 20px 40px;
+	font-family: Calibri;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
+	float: left;
+}
+.button{
+	color: white;
+	background: #000000;
+	padding: 8px;
+	font-size: 20px;
+}
+.button:hover { 
+	background: royalblue;
+}
+.löschen{
+	color: white;
+	background: #000000;
+	padding: 8px;
+	font-size: 20px;
+	margin-right: 30px;
+	margin-bottom: 10px;
+}
+.löschen:hover { 
+	background: red;
+}
+.footer {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;	
+	background: #bfbfbf;
+	margin-bottom: 0px;
+	text-align: right;
+}
+.impressum {
+	padding-right: 10%;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	font-size: 15px;
+	color: black;
+	text-decoration: none;
+}
+.impressum:hover {
+	text-decoration: underline;
+	cursor: pointer;
+}
+.icon {
+	vertical-align: middle; 
+	margin-right: 5px;
+}
+.anmeldung {
+	font-weight: bold;
+	font-size: 25px;
+}
