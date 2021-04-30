@@ -79,6 +79,7 @@
 		$sql="SELECT SUM(termine) / SUM(voices) AS summe FROM $username";
         $result=$pdo->query($sql)->fetch();
 		
+		echo $username;
         echo $result["summe"];
 		?>
 		</div>
@@ -89,6 +90,7 @@
 		$sql="SELECT Count(ID) AS summe FROM $username";
 		$result=$pdo->query($sql)->fetch();
 		
+		echo $username;
 		echo $result["summe"];
 		?>
 		</div>
