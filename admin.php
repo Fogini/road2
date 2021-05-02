@@ -20,10 +20,10 @@
 ?>
 <h1 class="auswertung">Auswertung</h1>
 <?php 
-$test = array("david","malik","lukas","nils","theo","julian");
+$team = array("david","malik","lukas","nils","theo","julian");
 
-for ($x=0; $x < sizeof($test); $x++) {
-	$_SESSION['tier'] = $test[$x];
+for ($x=0; $x < sizeof($team); $x++) {
+	$_SESSION['user'] = $team[$x];
 	require("data.php");
 }
 ?>

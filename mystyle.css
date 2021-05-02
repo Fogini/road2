@@ -35,6 +35,16 @@ body {
 .button:hover { 
 	background: royalblue;
 }
+.filter{
+	color: white;
+	background: #000000;
+	padding: 3px;
+	font-size: 17px;
+	margin-top: 5px;
+}
+.filter:hover { 
+	background: royalblue;
+}
 .löschen{
 	color: white;
 	background: #000000;

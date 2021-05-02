@@ -45,58 +45,10 @@
 		</p>
 	</form>
 </div>
-<div class="form">
-	<form autocomplete="off">
-		<p class="anmeldung">Daten</p>
-		<p>
-		<img class="icon" src="myicon.png" style="object-fit:cover; width:26px; height:26px;">Road2Büro
-		</p>
-		<p>
-		<div>Voices: 
-		<?php 
-		$pdo = new PDO('mysql:host=localhost;dbname=road2', 'root', 'pumpkin');
-		$sql="SELECT SUM(voices) AS summe FROM $username";
-        $result=$pdo->query($sql)->fetch();
-		
-        echo $result["summe"];
-		?>
-		</div>
-		</p>
-		<p>
-		<div>Termine: 
-		<?php 
-		$sql="SELECT SUM(termine) AS summe FROM $username";
-        $result=$pdo->query($sql)->fetch();
-		
-		echo $username;
-        echo $result["summe"];
-		?>
-		</div>
-		</p>
-		<p>
-		<div>Aktuelle Quote: 
-		<?php 
-		$sql="SELECT SUM(termine) / SUM(voices) AS summe FROM $username";
-        $result=$pdo->query($sql)->fetch();
-		
-		echo $username;
-        echo $result["summe"];
-		?>
-		</div>
-		</p>
-		<p>
-		<div>Anzahl: 
-		<?php 
-		$sql="SELECT Count(ID) AS summe FROM $username";
-		$result=$pdo->query($sql)->fetch();
-		
-		echo $username;
-		echo $result["summe"];
-		?>
-		</div>
-		</p>
-	</form>
-</div>
+<?php 
+	$_SESSION['user'] = $username;
+	require("data.php");
+?>
 <script>
   var today = new Date();
   var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
