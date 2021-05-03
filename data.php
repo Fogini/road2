@@ -78,7 +78,7 @@
 		</div>
 		</div>
 		<p>
-		<div>Voices: 
+		<div class="br">Voices: 
 		<?php 		
 		$sql="SELECT SUM(voices) AS summe FROM $user WHERE date BETWEEN '$von' AND '$bis'";
         $result=$pdo->query($sql)->fetch();
@@ -86,9 +86,7 @@
         echo $result["summe"];
 		?>
 		</div>
-		</p>
-		<p>
-		<div>Termine: 
+		<div class="br">Termine: 
 		<?php 
 		$sql="SELECT SUM(termine) AS summe FROM $user WHERE date BETWEEN '$von' AND '$bis'";
         $result=$pdo->query($sql)->fetch();
@@ -96,19 +94,15 @@
         echo $result["summe"];
 		?>
 		</div>
-		</p>
-		<p>
-		<div>Aktuelle Quote: 
+		<div class="br">Quote: 
 		<?php 
 		$sql="SELECT SUM(termine) / SUM(voices) AS summe FROM $user WHERE date BETWEEN '$von' AND '$bis'";
         $result=$pdo->query($sql)->fetch();
 		
-        echo $result["summe"];
+        echo round($result["summe"], 2);
 		?>
 		</div>
-		</p>
-		<p>
-		<div>Anzahl: 
+		<div class="br">Einräge: 
 		<?php 
 		$sql="SELECT Count(ID) AS summe FROM $user WHERE date BETWEEN '$von' AND '$bis'";
 		$result=$pdo->query($sql)->fetch();
@@ -116,7 +110,17 @@
 		echo $result["summe"];
 		?>
 		</div>
-		</p>
+		<?php require_once("bar.php"); ?>
+			<div class="br">Fortschritt:</div>
+			  <div class="progress">
+				<div 	class="progress-bar" role="progressbar" 
+						aria-valuenow="<?php value($user);?>" 
+						aria-valuemin="0" 
+						aria-valuemax="100" 
+						style="width:<?php value($user);?>%;background-color:<?php quote($user);?>">
+				  <?php value($user);?>% 
+				</div>
+			  </div>
 	</form>
 </div>
 <script>

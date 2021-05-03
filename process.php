@@ -39,7 +39,7 @@ function login() {
 	else if (password_verify($password, $hash['password'])) {
 		session_start();
 		$_SESSION['varname'] = $username;
-		if ($hash['username'] == "admin") {
+		if ($hash['username'] == "main") {
 			header("Location: admin.php");
 			exit();
 		}
