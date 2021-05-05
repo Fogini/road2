@@ -1,5 +1,5 @@
-<?php 
-		$user = $_SESSION['user'];
+<?php // data.php
+		$user = $_SESSION['user']; // checks if username is set
 		if (isset($user)){
 		}
 		else {
@@ -13,28 +13,27 @@
 		
 		$pdo = new PDO('mysql:host=localhost;dbname=road2', 'root', 'pumpkin');
 		
-		$sql="SELECT MIN(date) as mindate FROM $user";
-        $result=$pdo->query($sql)->fetch();
+		$sql="SELECT MIN(date) as mindate FROM data WHERE name = '$user'";
+        $min_date=$pdo->query($sql)->fetch();
 		
-		$mysql="SELECT MAX(date) as maxdate FROM $user";
+		$mysql="SELECT MAX(date) as maxdate FROM data WHERE name = '$user'";
         $max_date=$pdo->query($mysql)->fetch();
 		
-		
-		if (isset($_POST["von"])){
+		if (isset($_POST["von"])){          // sets default date and applies filter if used
 			if (empty($_POST["von"])){
-				$von = $result["mindate"];
+				$von = $min_date["mindate"];
 			}
 			else {
 				$von = $_POST["von"];
 			}
 		}
 		else {
-			$von = $result["mindate"];
+			$von = $min_date["mindate"];
 		}
 
 		if (isset($_POST["bis"])){
 			if (empty($_POST["bis"])){
-				$bis = date("m/d/Y");
+				$bis = $max_date["maxdate"];
 			}
 			else {
 				$bis = $_POST["bis"];
@@ -44,88 +43,87 @@
 			$bis = $max_date["maxdate"];
 		}
 		
-		if ($von > $bis) {
-			echo "greater";
-			$von = $result["mindate"];
-			$bis = $max_date["maxdate"];
-		}
-		
 		echo ucfirst($user);
 		?>
 		</p>
 		<p>
 		<?php
-		echo date('j. M Y', strtotime($von)) . " bis " . date('j. M Y', strtotime($bis));
+		echo date('j. M Y', strtotime($von)) . " bis " . date('j. M Y', strtotime($bis));  // echo date von bis
 		?>
 		</p>
+
 		<div>
+
 		<div>
-		<label>Von:</label>
-		<input type="text"
-		name="von"
-        onfocus="(this.type='date')"
-        onblur="(this.type='text')"/>
+		<label>Von:</label>                                                                
+		<input type="date" style="cursor:pointer;" value="<?php echo date("Y-m-01"); ?>" name="von"/>
 		</div>
+
 		<div>
-		<label style="margin-right:8.5px">Bis:</label>
-		<input type="text" id="datum"
-		name="bis"
-        onfocus="(this.type='date')"
-        onblur="(this.type='text')"/>
+		<label>Bis:</label>                                     
+		<input type="date" style="cursor:pointer; margin-left: 8.5px;" value="<?php echo date("Y-m-d"); ?>" name="bis">
 		</div>
 		<div>
 		<input type="submit" name="filter" class="filter" value="Filter" />
 		</div>
 		</div>
+
 		<p>
+
 		<div class="br">Voices: 
 		<?php 		
-		$sql="SELECT SUM(voices) AS summe FROM $user WHERE date BETWEEN '$von' AND '$bis'";
-        $result=$pdo->query($sql)->fetch();
-		
-        echo $result["summe"];
+		$sql="SELECT SUM(voices) AS summe FROM data WHERE name = '$user' AND date BETWEEN '$von' AND '$bis'";
+        $sum_voices=$pdo->query($sql)->fetch();
+        echo $sum_voices["summe"];
 		?>
 		</div>
+
 		<div class="br">Termine: 
 		<?php 
-		$sql="SELECT SUM(termine) AS summe FROM $user WHERE date BETWEEN '$von' AND '$bis'";
-        $result=$pdo->query($sql)->fetch();
-		
-        echo $result["summe"];
+		$sql="SELECT SUM(termine) AS summe FROM data WHERE name = '$user' AND date BETWEEN '$von' AND '$bis'";
+        $sum_termine=$pdo->query($sql)->fetch();
+        echo $sum_termine["summe"];
 		?>
 		</div>
+
 		<div class="br">Quote: 
 		<?php 
-		$sql="SELECT SUM(termine) / SUM(voices) AS summe FROM $user WHERE date BETWEEN '$von' AND '$bis'";
-        $result=$pdo->query($sql)->fetch();
-		
-        echo round($result["summe"], 2);
+		$sql="SELECT SUM(termine) / SUM(voices) AS summe FROM data WHERE name = '$user' AND date BETWEEN '$von' AND '$bis'";
+        $quote=$pdo->query($sql)->fetch();	
+        echo round($quote["summe"], 4) * 100 . "%";
 		?>
 		</div>
-		<div class="br">Einräge: 
+
+		<div class="br">Einträge: 
 		<?php 
-		$sql="SELECT Count(ID) AS summe FROM $user WHERE date BETWEEN '$von' AND '$bis'";
-		$result=$pdo->query($sql)->fetch();
-		
-		echo $result["summe"];
+		$sql="SELECT Count(ID) AS summe FROM data WHERE name = '$user' AND date BETWEEN '$von' AND '$bis'";
+		$count_einträge=$pdo->query($sql)->fetch();
+		echo $count_einträge["summe"];
 		?>
 		</div>
-		<?php require_once("bar.php"); ?>
-			<div class="br">Fortschritt:</div>
+
+        <?php require_once("bar.php");?>
+
+			<div class="br">Voice Ziel:</div>
 			  <div class="progress">
 				<div 	class="progress-bar" role="progressbar" 
-						aria-valuenow="<?php value($user);?>" 
+						aria-valuenow="<?php value($user, 'voices');?>" 
 						aria-valuemin="0" 
 						aria-valuemax="100" 
-						style="width:<?php value($user);?>%;background-color:<?php quote($user);?>">
-				  <?php value($user);?>% 
+						style="width:<?php value($user, 'voices');?>%;background-color:<?php compare_quotas($user, 'voices');?>">
+				  <?php value($user, 'voices');?>% 
 				</div>
 			  </div>
+            <div class="br">Termin Ziel:</div>
+			  <div class="progress">
+				<div 	class="progress-bar" role="progressbar" 
+						aria-valuenow="<?php value($user, 'termine');?>" 
+						aria-valuemin="0" 
+						aria-valuemax="100" 
+						style="width:<?php value($user, 'termine');?>%;background-color:<?php compare_quotas($user, 'termine');?>">
+				  <?php value($user, 'termine');?>% 
+				</div>
+			  </div>
+
 	</form>
 </div>
-<script>
-  var heute = new Date();
-  var date = heute.getFullYear()+'-'+(heute.getMonth()+1)+'-'+heute.getDate();
-  document.getElementById("datum").value = date;
-</script>
-

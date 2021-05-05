@@ -1,44 +1,41 @@
+<?php //bar.php
 
-<?php
-			function value($benutzer) {
-				$pdo = new PDO('mysql:host=sql106.epizy.com;dbname=epiz_28415679_road2', 'epiz_28415679', 'CQVWIDJVUA');
+			function value($user, $type) {
+				$pdo = new PDO('mysql:host=localhost;dbname=road2', 'root', 'pumpkin');
 				$current_month = date("F");
 				$start_date = date('Y-m-01');
 				$end_date = date ('Y-m-t');
-				$user = $benutzer;
 							
-					$sql="SELECT * FROM goals WHERE month = '$current_month'";
+					$sql="SELECT * FROM goals WHERE month = '$current_month' AND type = '$type'";
 					$goal=$pdo->query($sql)->fetch();
 							
-					$mysql="SELECT SUM(voices) AS summe FROM $user WHERE date BETWEEN '$start_date' AND '$end_date'";
-					$sum_voices=$pdo->query($mysql)->fetch();
+					$mysql="SELECT SUM($type) AS summe FROM data WHERE name = '$user' AND date BETWEEN '$start_date' AND '$end_date'";
+					$sum=$pdo->query($mysql)->fetch();
 					
-					echo round($sum_voices["summe"] / $goal[$user] * 100, 2);
+					echo round($sum["summe"] / $goal[$user] * 100, 2);
 			}
 
-			function quote($benutzer) {
-				$pdo = new PDO('mysql:host=sql106.epizy.com;dbname=epiz_28415679_road2', 'epiz_28415679', 'CQVWIDJVUA');
+			function compare_quotas($user, $type) {
+				$pdo = new PDO('mysql:host=localhost;dbname=road2', 'root', 'pumpkin');
 				$current_month = date("F");
 				$start_date = date('Y-m-01');
 				$end_date = date ('Y-m-t');
 				$month_days = date ('t');
-				$user = $benutzer;
 				
-				$sql="SELECT * FROM goals WHERE month = '$current_month'";
+				$sql="SELECT * FROM goals WHERE month = '$current_month' AND type = '$type'";
 				$goal=$pdo->query($sql)->fetch();
 				
-				$mysql="SELECT AVG(voices) AS average FROM $user WHERE date BETWEEN '$start_date' AND '$end_date'";
-				$avg_voices=$pdo->query($mysql)->fetch();
+				$mysql="SELECT SUM($type) AS summe FROM data WHERE name = '$user' AND date BETWEEN '$start_date' AND '$end_date'";
+				$sum=$pdo->query($mysql)->fetch();
 				
-				$quote_goal = $goal[$user] / $month_days;
+				$goal_quote = $goal[$user] / $month_days;
+                $current_quote = $sum["summe"] / (date('j')-1);
 				
-				if ($quote_goal > $avg_voices["average"]) {
-					echo "#d9534f"; //rot
+				if ($goal_quote >  $current_quote) {
+					echo "#d9534f"; //rot                   
 				}
 				else {
 					echo "#5cb85c"; //grün
-				}
-				
+				}	
 			}
-			?>
-
+?>

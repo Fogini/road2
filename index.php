@@ -1,5 +1,4 @@
-<!Doctype html>
-<?php 
+<?php // index.php
 		session_start();
 		$username = $_SESSION['varname'];
 		if (isset($username)){
@@ -9,6 +8,7 @@
 		exit();
 		}
 ?>
+<!Doctype html>
 <html lang="en">
 <head>
 	<title>Road2Büro</title>
@@ -17,6 +17,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="icon" type="image/png" href="myicon.png">
 </head>
+<style>
+<?php include 'mystyle.css'; ?>
+</style>
 <body>
 <div class="form">
 	<form action="process.php" method="post" autocomplete="off">
@@ -26,18 +29,16 @@
 		</p>
 		<p>
 		<label>Voices:</label><br />
-		<input type="text" name="voices" id="voices"/>
+		<input type="text" class="input2" name="voices" id="voices"/>
 		</p>
 		<p>
 		<label>Termine:</label><br />
-		<input type="text" name="termine" id="termine"/>
+		<input type="text" class="input2" name="termine" id="termine"/>
 		</p>
 		<p>
 		<label>Datum:</label><br />
-		<input type="text" id="date"
-		name="date"
-        onfocus="(this.type='date')"
-        onblur="(this.type='text')"/>
+		<input type="date" class="input2"
+		name="date" style="cursor:pointer;" value="<?php echo date("Y-m-d"); ?>">
 		</p>
 		<p>
 		<input type="submit" name="löschen" class="löschen" value="Löschen" />
@@ -49,11 +50,6 @@
 	$_SESSION['user'] = $username;
 	require("data.php");
 ?>
-<script>
-  var today = new Date();
-  var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-  document.getElementById("date").value = date;
-</script>
 <div class="footer">
 	<div> 
 		<a href="impressum.html" class="impressum">Impressum</a>
@@ -61,4 +57,3 @@
 </div>
 </body>
 </html>
-

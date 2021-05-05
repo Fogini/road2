@@ -1,4 +1,4 @@
-<!Doctype html>
+<!Doctype html> <!--login.php-->
 <html lang="en">
 <head>
 	<title>Road2Büro Login</title>
@@ -6,6 +6,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="icon" type="image/png" href="myicon.png">
+<style>
+<?php include 'mystyle.css'; ?>
+</style>
 </head>
 <body>
 
@@ -17,11 +20,11 @@
 		</p>
 		<p>
 		<label>Benutzer:</label><br />
-		<input type="text" name="username" id="user"/>
+		<input type="text" class="input1" name="username" id="user"/>
 		</p>
 		<p>
 		<label>Passwort:</label><br />
-		<input type="password" name="password" id="password"/>
+		<input type="password" class="input1" name="password" id="password"/>
 		</p>
 		<p>
 		<input type="submit" name="login" class="button" value="Login" />

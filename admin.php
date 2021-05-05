@@ -1,4 +1,4 @@
-<!Doctype html>
+<!Doctype html> <!--admin.php-->
 <html lang="en">
 <head>
 	<title>Road2Büro</title>
@@ -6,12 +6,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="icon" type="image/png" href="myicon.png">
+<style>
+<?php include 'mystyle.css'; ?>
+</style>
 </head>
 <body>
 <?php 
 		session_start();
-		$username = $_SESSION['varname'];
-		if (isset($username)){
+		$admin = $_SESSION['varname'];
+		if (isset($admin) && $admin == "admin"){
 		}
 		else {
 		header("Location: login.php");
@@ -20,12 +23,21 @@
 ?>
 <h1 class="auswertung">Auswertung</h1>
 <?php 
-$team = array("david","malik","lukas","nils","theo","julian");
+$pdo = new PDO('mysql:host=localhost;dbname=road2', 'root', 'pumpkin');
 
-for ($x=0; $x < sizeof($team); $x++) {
-	$_SESSION['user'] = $team[$x];
-	require("data.php");
+$sql="SELECT DISTINCT name FROM data";
+
+foreach ($pdo->query($sql) as $list) {
+    $names = $list['name']; 
+
+    $team = array($names);
+
+    for ($x=0; $x < sizeof($team); $x++) {
+        $_SESSION['user'] = $team[$x];
+        require("data.php");
+    }
 }
+
 ?>
 <div class="footer">
 	<div> 
@@ -34,4 +46,3 @@ for ($x=0; $x < sizeof($team); $x++) {
 </div>
 </body>
 </html>
-
