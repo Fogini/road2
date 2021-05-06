@@ -1,6 +1,13 @@
 <?php // data.php
 		$user = $_SESSION['user']; // checks if username is set
 		if (isset($user)){
+			if ($user == "team") {
+				$user = 'julian';
+				$condition = "";
+			}
+			else {
+				$condition = "name = '$user' AND";
+			}
 		}
 		else {
 		header("Location: 404.php");
@@ -13,10 +20,10 @@
 		
 		$pdo = new PDO('mysql:host=localhost;dbname=road2', 'root', 'pumpkin');
 		
-		$sql="SELECT MIN(date) as mindate FROM data WHERE name = '$user'";
+		$sql="SELECT MIN(date) as mindate FROM data WHERE $condition ID > 0";
         $min_date=$pdo->query($sql)->fetch();
 		
-		$mysql="SELECT MAX(date) as maxdate FROM data WHERE name = '$user'";
+		$mysql="SELECT MAX(date) as maxdate FROM data WHERE $condition ID > 0";
         $max_date=$pdo->query($mysql)->fetch();
 		
 		if (isset($_POST["von"])){          // sets default date and applies filter if used
@@ -72,7 +79,7 @@
 
 		<div class="br">Voices: 
 		<?php 		
-		$sql="SELECT SUM(voices) AS summe FROM data WHERE name = '$user' AND date BETWEEN '$von' AND '$bis'";
+		$sql="SELECT SUM(voices) AS summe FROM data WHERE $condition date BETWEEN '$von' AND '$bis'";
         $sum_voices=$pdo->query($sql)->fetch();
         echo $sum_voices["summe"];
 		?>
@@ -80,7 +87,7 @@
 
 		<div class="br">Termine: 
 		<?php 
-		$sql="SELECT SUM(termine) AS summe FROM data WHERE name = '$user' AND date BETWEEN '$von' AND '$bis'";
+		$sql="SELECT SUM(termine) AS summe FROM data WHERE $condition date BETWEEN '$von' AND '$bis'";
         $sum_termine=$pdo->query($sql)->fetch();
         echo $sum_termine["summe"];
 		?>
@@ -88,15 +95,15 @@
 
 		<div class="br">Quote: 
 		<?php 
-		$sql="SELECT SUM(termine) / SUM(voices) AS summe FROM data WHERE name = '$user' AND date BETWEEN '$von' AND '$bis'";
+		$sql="SELECT SUM(termine) / SUM(voices) AS quote FROM data WHERE $condition date BETWEEN '$von' AND '$bis'";
         $quote=$pdo->query($sql)->fetch();	
-        echo round($quote["summe"], 4) * 100 . "%";
+        echo round($quote["quote"], 4) * 100 . "%";
 		?>
 		</div>
 
 		<div class="br">Einträge: 
 		<?php 
-		$sql="SELECT Count(ID) AS summe FROM data WHERE name = '$user' AND date BETWEEN '$von' AND '$bis'";
+		$sql="SELECT Count(ID) AS summe FROM data WHERE $condition date BETWEEN '$von' AND '$bis'";
 		$count_einträge=$pdo->query($sql)->fetch();
 		echo $count_einträge["summe"];
 		?>
@@ -107,21 +114,21 @@
 			<div class="br">Voice Ziel:</div>
 			  <div class="progress">
 				<div 	class="progress-bar" role="progressbar" 
-						aria-valuenow="<?php value($user, 'voices');?>" 
+						aria-valuenow="<?php value('voices', $condition);?>" 
 						aria-valuemin="0" 
 						aria-valuemax="100" 
-						style="width:<?php value($user, 'voices');?>%;background-color:<?php compare_quotas($user, 'voices');?>">
-				  <?php value($user, 'voices');?>% 
+						style="width:<?php value('voices', $condition);?>%;background-color:<?php compare_quotas('voices', $condition);?>">
+				  <?php value('voices', $condition);?>% 
 				</div>
 			  </div>
             <div class="br">Termin Ziel:</div>
 			  <div class="progress">
 				<div 	class="progress-bar" role="progressbar" 
-						aria-valuenow="<?php value($user, 'termine');?>" 
+						aria-valuenow="<?php value('termine', $condition);?>" 
 						aria-valuemin="0" 
 						aria-valuemax="100" 
-						style="width:<?php value($user, 'termine');?>%;background-color:<?php compare_quotas($user, 'termine');?>">
-				  <?php value($user, 'termine');?>% 
+						style="width:<?php value('termine', $condition);?>%;background-color:<?php compare_quotas('termine', $condition);?>">
+				  <?php value('termine', $condition);?>% 
 				</div>
 			  </div>
 

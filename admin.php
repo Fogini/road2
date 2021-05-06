@@ -37,6 +37,8 @@ foreach ($pdo->query($sql) as $list) {
         require("data.php");
     }
 }
+$_SESSION['user'] = "team";
+require("data.php");
 
 ?>
 <div class="footer">
